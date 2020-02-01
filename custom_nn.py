@@ -22,7 +22,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 num_epochs = 100
-batch_size = 2
+batch_size = 128
 learning_rate = 1e-3
 latent_size = 64
 PATH = "facade_ae.pth"
@@ -48,14 +48,6 @@ if __name__ == "__main__":
 
     dataset_sizes = {x: len(image_datasets[x]) for x in ['train']}
     print(dataset_sizes)
-    dataiter = iter(dataset_loaders['train'])
-    sample = dataiter.next()
-    images_1 = sample['input_1']
-    images_2 = sample['input_2']
-    images_gt = sample['input_gt']
-    print(images_1.shape)
-    print(images_2.shape)
-    print(images_gt.shape)
 
     # GPU mode
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

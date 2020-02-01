@@ -157,13 +157,10 @@ class AutoEncoder(nn.Module):
         return x
 
     def forward(self, x1, x2):
-        print('forward x1: ', x1.shape)
-        print('forward x2: ', x2.shape)
         z1 = self.encode(x1)
         z2 = self.encode(x2)
         z = z1.add_(z2)
         z = z / 2
-        print(z.shape)
         decoded = self.decode(z)
         return z, decoded
 

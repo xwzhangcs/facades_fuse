@@ -22,7 +22,7 @@ import cv2
 import warnings
 warnings.filterwarnings("ignore")
 
-batch_size = 6
+batch_size = 1
 PATH = "facade_ae.pth"
 latent_size = 64
 
@@ -39,11 +39,13 @@ if __name__ == "__main__":
     model = AutoEncoder(in_channels=1, dec_channels=16, latent_size=latent_size)
     model.load_state_dict(torch.load(PATH))
     model.eval()
-    '''
+
     for i_batch, test_batch in enumerate(test_dataset_loader):
-        inputs = test_batch['input']
-        print(i_batch, inputs.size())
-        _, output = model(inputs)
+        img_1 = test_batch['input_1']
+        img_2 = test_batch['input_2']
+        images_gt = test_batch['input_gt']
+        print(i_batch, images_gt.size())
+        _, output = model(img_1, img_2)
         # output is resized into a batch of iages
         output = output.view(batch_size, 1, 128, 128)
         # use detach when it's an output that requires_grad
@@ -52,7 +54,7 @@ if __name__ == "__main__":
         output = np.where(output < 0.1, 0, 255)
         #im = Image.fromarray(output)
         #matplotlib.image.imsave('eval/facade_' + str(i_batch) + '.png', im)
-        cv2.imwrite('eval/facade_' + str(i_batch) + '.png', output)
+        cv2.imwrite('eval_fuse/facade_' + str(i_batch) + '.png', output)
         print('---------------------------')
         if i_batch > 100:
             break
@@ -81,7 +83,7 @@ if __name__ == "__main__":
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
     plt.savefig('eval_result.png')
-
+    '''
 
 
 
